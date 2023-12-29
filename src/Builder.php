@@ -50,7 +50,7 @@ class Builder extends EloquentBuilder
      */
     public function callParent($method, array $args)
     {
-        return call_user_func_array("parent::{$method}", $args);
+        return parent::$method(...array_values($args));
     }
 
     /**
@@ -124,7 +124,7 @@ class Builder extends EloquentBuilder
      */
     public function where($column, $operator = null, $value = null, $boolean = 'and')
     {
-        if (!in_array(strtolower($operator), $this->operators, true)) {
+        if (! $column instanceof Closure && !in_array(strtolower($operator), $this->operators, true)) {
             list($value, $operator) = [$operator, '='];
         }
 
